@@ -12,6 +12,7 @@
 ### Install
 - Download the package of this project, unzip it.
 ### Use
+**Run the following command in the unzipped fold.**
 
 ```shell
 # start

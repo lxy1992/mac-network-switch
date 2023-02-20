@@ -1,12 +1,16 @@
 package cmd
 
 import (
+	"embed"
 	"fmt"
 	"os"
 	"os/exec"
 
 	"github.com/spf13/cobra"
 )
+
+//go:embed config/*
+var ConfigFiles embed.FS
 
 func init() {
 	cmd := &cobra.Command{
@@ -17,25 +21,35 @@ func init() {
 	rootCmd.AddCommand(cmd)
 }
 
-//nolint:forbidigo // have to
+//nolint:forbidigo,gosec // have to
 func ToggleAirport(cmd *cobra.Command, _ []string) {
 	switchCommand, err := cmd.Flags().GetString("switch")
 	if err != nil {
 		fail(err.Error())
 	}
 	// 放置脚本并修改权限
-	cmdLine := "sudo cp config/toggleAirport.sh /Library/Scripts/toggleAirport.sh && " +
-		"chmod 755 /Library/Scripts/toggleAirport.sh"
+	script, err := ConfigFiles.ReadFile("config/toggleAirport.sh")
+	if err != nil {
+		fail(err.Error())
+	}
 
-	err = runCommand(cmdLine)
+	err = os.WriteFile("/Library/Scripts/toggleAirport.sh", script, 0o755)
 	if err != nil {
 		fail(err.Error())
 	}
 
 	// 放置配置文件
-	cmdLine = "sudo cp config/com.mine.toggleairport.plist /Library/LaunchAgents/com.mine.toggleairport.plist " +
-		"&& sudo chmod 600 /Library/LaunchAgents/com.mine.toggleairport.plist && " +
-		"sudo chown root /Library/LaunchAgents/com.mine.toggleairport.plist && " +
+	plist, err := ConfigFiles.ReadFile("config/com.mine.toggleairport.plist")
+	if err != nil {
+		fail(err.Error())
+	}
+
+	err = os.WriteFile("/Library/LaunchAgents/com.mine.toggleairport.plist", plist, 0o600)
+	if err != nil {
+		fail(err.Error())
+	}
+
+	cmdLine := "sudo chown root /Library/LaunchAgents/com.mine.toggleairport.plist && " +
 		"sudo chgrp wheel /Library/LaunchAgents/com.mine.toggleairport.plist"
 
 	err = runCommand(cmdLine)

@@ -15,7 +15,7 @@
 
 ```shell
 # start
-sudo ./mac-network-switch toggleAirport -s start
+make start
 # stop
-sudo ./mac-network-switch toggleAirport -s stop
+make stop
 ```

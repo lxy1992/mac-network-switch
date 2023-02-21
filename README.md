@@ -12,11 +12,10 @@
 
 ## How to Use
 ### Install
-- Download the package of this project
-### Use
 ```shell
 go install github.com/lxy1992/mac-network-switch@latest
 ```
+### Use
 
 ```shell
 sudo mac-network-switch toggleAirport --switch start

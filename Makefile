@@ -1,10 +1,13 @@
 ##################################
 #######       Setup       ########
 ##################################
-.PHONY: setup
+.PHONY: setup tidy
 
 setup:
 	@go mod download
+
+tidy:
+	@go mod tidy
 
 start:
 	@sudo ./mac-network-switch toggleAirport --switch start

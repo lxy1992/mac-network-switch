@@ -12,6 +12,13 @@
 - When Ethernet connected, WiFi will be closed automatically.
 - When Ethernet disconnected, WiFi will be open automatically.
 
+## Support
+- OSX 13
+- Device
+  - USB10
+  - AX88179A
+  - Thunderbolt Ethernet Slot
+
 ## How to Use
 ### Install
 ```shell
